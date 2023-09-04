@@ -27,6 +27,7 @@ public class ProductionHouse {
     public ProductionHouse(String name, double ratings){
         this.name = name;
         this.ratings = ratings;
+        this.webSeriesList = new ArrayList<>();
     }
     public ProductionHouse() {
     }
