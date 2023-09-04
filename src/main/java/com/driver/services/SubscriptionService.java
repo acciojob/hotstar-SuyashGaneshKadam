@@ -38,6 +38,9 @@ public class SubscriptionService {
             totalAmountPaid = 1000 + 350 * subscriptionEntryDto.getNoOfScreensRequired();
         }
         Subscription subscription = new Subscription(subscriptionType,subscriptionEntryDto.getNoOfScreensRequired(),new Date(),totalAmountPaid);
+        user.setSubscription(subscription);
+        subscription.setUser(user);
+        subscriptionRepository.save(subscription);
         return totalAmountPaid;
     }
 
