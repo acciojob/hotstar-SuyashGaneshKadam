@@ -25,8 +25,20 @@ public class SubscriptionService {
     public Integer buySubscription(SubscriptionEntryDto subscriptionEntryDto){
 
         //Save The subscription Object into the Db and return the total Amount that user has to pay
-
-        return null;
+        User user = userRepository.findById(subscriptionEntryDto.getUserId()).get();
+        int totalAmountPaid = 0;
+        SubscriptionType subscriptionType = subscriptionEntryDto.getSubscriptionType();
+        if(subscriptionType == SubscriptionType.BASIC){
+            totalAmountPaid = 500 + 200 * subscriptionEntryDto.getNoOfScreensRequired();
+        }
+        else if(subscriptionType == SubscriptionType.PRO){
+            totalAmountPaid = 800 + 250 * subscriptionEntryDto.getNoOfScreensRequired();
+        }
+        else{
+            totalAmountPaid = 1000 + 350 * subscriptionEntryDto.getNoOfScreensRequired();
+        }
+        Subscription subscription = new Subscription(subscriptionType,subscriptionEntryDto.getNoOfScreensRequired(),new Date(),totalAmountPaid);
+        return totalAmountPaid;
     }
 
     public Integer upgradeSubscription(Integer userId)throws Exception{
