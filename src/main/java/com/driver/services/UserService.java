@@ -34,14 +34,26 @@ public class UserService {
         //Hint: Take out all the Webseries from the WebRepository
         List<WebSeries> webSeriesList = webSeriesRepository.findAll();
         User user = userRepository.findById(userId).get();
-        Integer count = 0;
+        SubscriptionType userSubscriptionType = user.getSubscription().getSubscriptionType();
+        if(userSubscriptionType == SubscriptionType.ELITE){
+            return webSeriesList.size();
+        }
+        Integer proCount = 0;
+        Integer basicCount = 0;
         for(WebSeries webSeries : webSeriesList){
-            if(user.getSubscription().getSubscriptionType() == webSeries.getSubscriptionType() &&
-            user.getAge() >= webSeries.getAgeLimit()){
-                count++;
+            if(user.getAge() >= webSeries.getAgeLimit()){
+                if(webSeries.getSubscriptionType() == SubscriptionType.PRO){
+                    proCount++;
+                }
+                if(webSeries.getSubscriptionType() == SubscriptionType.BASIC){
+                    basicCount++;
+                }
             }
         }
-        return count;
+        if(user.getSubscription().getSubscriptionType() == SubscriptionType.PRO){
+            return proCount + basicCount;
+        }
+        return basicCount;
     }
 
 
